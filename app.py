@@ -24,7 +24,9 @@ def get_tweets(query,tweet_fields,bearer_token = api_keys.BEARER_TOKEN, max_resu
 
 def test_get_tweets():
     example = get_tweets("Liverpool", "tweet.fields=text", max_results=20)
-    print(json.dumps(example, indent=4, sort_keys=True))
+    for tweet in example["data"]:
+        print(tweet['text'])
+    #print(json.dumps(example, indent=4, sort_keys=True))
     return 0
 
 def test_analyze_test():
@@ -41,4 +43,27 @@ def test_analyze_test():
 #test_get_tweets()
 
 #test_analyze_test()
+
+def main():
+    team = input("Enter the name of the team you would like to analyze: \n")
+    tweets = get_tweets(team, "tweet.fields=text", max_results=20)
+
+    total_score = []
+    total_magnitude = []
+
+    for tweet in tweets['data']:
+        analysis = json.loads(analyze_text(tweet["text"]))
+        total_score.append(analysis["documentSentiment"]["score"])
+        total_magnitude.append(analysis["documentSentiment"]["magnitude"])
+    
+    score = sum(total_score) / len(total_score)
+    magnitude = sum(total_magnitude) / len(total_magnitude)
+
+    if score > 0:
+        print("Overall mood of {} fans is good!\n Sentiment analysis: \nscore: {}\nmagnitude: {}".format(team,score,magnitude))
+    else:
+        print("Overall mood of {} fans is, unfortunately, bad\n Sentiment analysis: \nscore: {}\nmagnitude: {}".format(team,score,magnitude))
+
+
+main()
 
