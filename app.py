@@ -29,7 +29,7 @@ def test_get_tweets():
     #print(json.dumps(example, indent=4, sort_keys=True))
     return 0
 
-def test_analyze_test():
+def test_analyze_text():
     example = "I feel bad today"
     annotations = json.loads(analyze_text(example))
     print(annotations)
@@ -42,7 +42,7 @@ def test_analyze_test():
 
 #test_get_tweets()
 
-#test_analyze_test()
+#test_analyze_text()
 
 def main():
     team = input("Enter the name of the team you would like to analyze: \n")
